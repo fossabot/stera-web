@@ -1,9 +1,26 @@
-import { type NextRequest } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
 import { updateDBSession } from "./libs/db/session"
 
 
-export async function middleware(request: NextRequest) {
-  return await updateDBSession(request)
+export async function middleware(req: NextRequest) {
+  const url = req.nextUrl
+  const reqCookies = req.cookies
+  // https://github.com/vercel/next.js/discussions/34822
+  function authpage(login: boolean) {
+    console.log(reqCookies.get("authmode")?.value)
+    if (reqCookies.has("authmode")) return NextResponse.rewrite(new URL(`/auth`, req.url));
+    const res = NextResponse.redirect(url)
+    res.cookies.set({
+      name: 'authmode',
+      value: login ? 'login' : 'signup',
+      path: '/',
+    })
+    return res;
+  }
+
+  if (url.pathname === "/login") return authpage(true);
+  if (url.pathname === "/signup") return authpage(false);
+  return await updateDBSession(req)
 }
 
 export const config = {
