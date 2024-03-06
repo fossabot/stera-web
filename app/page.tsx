@@ -1,22 +1,23 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import NextLink from "next/link";
-import { Button } from "primereact/button";
-import { Divider } from "primereact/divider";
+import { Button, Title } from "@mantine/core";
 
 export default function Home() {
   return (
     <>
-      <h1>Stera</h1>
-      <span className="p-buttonset">
+      <Title order={1} className="text-center">
+        Stera
+      </Title>
+      <Button.Group>
         <NextLink href="/login" passHref>
-          <Button label="ログイン" />
+          <Button>ログイン</Button>
         </NextLink>
         <NextLink href="/signup" passHref>
-        <Button label="新規登録" />
+          <Button>新規登録</Button>
         </NextLink>
-      </span>
+      </Button.Group>
     </>
   );
 }

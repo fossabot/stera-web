@@ -1,9 +1,9 @@
 "use client";
 import { deleteCookie, getCookie } from "cookies-next";
-import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
 import { useEffect, useState } from "react";
 import { login, signup } from "./actions";
+import { Button, Input } from "@mantine/core";
+import { SignupPassword } from "./SignupPassword";
 
 export default function AuthPage() {
   const [authmode, setAuthmode] = useState<"login" | "signup">("login");
@@ -38,13 +38,13 @@ export default function AuthPage() {
       )}
       {authmode === "login" ? (
         <div>
-          <Button label="ログイン" onClick={() => login(email, password)} />
-          <Button label="新規登録" onClick={() => toggle()} />
+          <Button onClick={() => login(email, password)}>ログイン</Button>
+          <Button onClick={() => toggle()}>新規登録</Button>
         </div>
       ) : (
         <div>
-          <Button label="新規登録" onClick={() => signup(email, password)} />
-          <Button label="ログイン" onClick={() => toggle()} />
+          <Button onClick={() => signup(email, password)}>新規登録</Button>
+          <Button onClick={() => toggle()}>ログイン</Button>
         </div>
       )}
     </>
@@ -66,44 +66,32 @@ function SignupForm({
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       val
     );
-  const isValidPassword = (val: string) => val.length <= 6;
+
   return (
     <div>
-      <div className="flex flex-column gap-2 mt-10">
-        <span className="p-float-label">
-          <InputText
+      <div>
+        <Input.Wrapper
+          label="メールアドレス"
+          description="捨てメアドは使用せず、継続的に利用できるアドレスで登録してください"
+          error="Input error"
+          inputWrapperOrder={['label', 'input', 'description', 'error']}
+        >
+          <Input
             id="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={isValidEmail(email) ? undefined : "p-invalid"}
+            placeholder="your@email.addr"
           />
-          <label htmlFor="username">Email</label>
-        </span>
-        {email === "" ? (
-          <small id="email-help">捨てメアドでの登録は禁止しております</small>
-        ) : isValidEmail(email) ? (
-          <small>有効です</small>
-        ) : (
-          <small id="email-help">有効なメールアドレスではありません</small>
-        )}
+        </Input.Wrapper>
       </div>
-      <div className="flex flex-column gap-2 mt-10">
-        <span className="p-float-label">
-          <InputText
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={isValidPassword(email) ? undefined : "p-invalid"}
-          />
-          <label htmlFor="password">Password</label>
-        </span>
-        {email === "" ? (
-          <small id="email-help">6文字以上で設定してください</small>
-        ) : isValidPassword(email) ? (
-          <small>有効です</small>
-        ) : (
-          <small id="email-help">6文字以上で設定してください</small>
-        )}
+      <div>
+        <SignupPassword
+          title="パスワード"
+          placeholder="*********"
+          value={password}
+          setValue={(newState: string) => setPassword(newState)}
+        />
       </div>
     </div>
   );
