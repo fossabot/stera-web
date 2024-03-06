@@ -4,7 +4,7 @@ import "./globals.css";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { PrimeReactProvider } from "primereact/api";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Stera",
@@ -19,9 +19,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head></head>
-      <PrimeReactProvider>
-        <body className={inter.className}>{children}</body>
-      </PrimeReactProvider>
+      <body><PrimeReactProvider>{children}</PrimeReactProvider></body>
     </html>
   );
 }
