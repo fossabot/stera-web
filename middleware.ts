@@ -4,6 +4,7 @@ import { updateDBSession } from "./libs/db/session"
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl
+  console.log(`[middleware.ts] Access: ${url}`)
   const reqCookies = req.cookies
   // https://github.com/vercel/next.js/discussions/34822
   function authpage(login: boolean) {
