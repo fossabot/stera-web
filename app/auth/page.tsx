@@ -24,7 +24,7 @@ export default function AuthPage() {
     window.history.replaceState(null, "", `/${cookieAuthMode}`);
     setTimeout(() => {
       deleteCookie("authmode");
-    }, 50);
+    }, 100);
   }, []);
 
   async function callLogin() {
