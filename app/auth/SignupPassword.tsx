@@ -10,17 +10,28 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 
-export function SignupPassword({ title, placeholder, value, setValue }: { title: string, placeholder: string, value: string, setValue: any }) {
+export function SignupPassword({
+  title,
+  placeholder,
+  value,
+  setValue,
+}: {
+  title: string;
+  placeholder: string;
+  value: string;
+  setValue: any;
+}) {
   // パスワード処理
   // https://mantine.dev/core/password-input/#strength-meter-example
+  // TIPS: ハイフンは、最初が最後に指定しないと、範囲指定と認識されてしまう
   const requirements = [
     { re: /[0-9]/, label: "数字を含む" },
     { re: /[a-z]/, label: "小文字のアルファベットを含む" },
     { re: /[A-Z]/, label: "大文字のアルファベットを含む" },
-    { re: /[$&+,:;=?@#|'<>.^*()%!-_"]/, label: "記号を含む" },
+    { re: /[-$&+,:;=?@#|'<>.^*()%!_"]/, label: "記号を含む" },
   ];
   const [popoverOpened, setPopoverOpened] = useState(false);
-//   const [value, setValue] = useState("");
+  //   const [value, setValue] = useState("");
   function PasswordRequirement({
     meets,
     label,
@@ -82,10 +93,7 @@ export function SignupPassword({ title, placeholder, value, setValue }: { title:
       </Popover.Target>
       <Popover.Dropdown>
         <Progress color={color} value={strength} size={5} mb="xs" />
-        <PasswordRequirement
-          label="6文字以上"
-          meets={value.length > 5}
-        />
+        <PasswordRequirement label="6文字以上" meets={value.length > 5} />
         {checks}
       </Popover.Dropdown>
     </Popover>
