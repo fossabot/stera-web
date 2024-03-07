@@ -38,10 +38,8 @@ export async function signup(email: string, password: string) {
 
   if (error) {
     console.log(error.message)
-    return { message: error.message };
+    return { isError: true, statusCode: "00", message: error.message };
   } else {
-    // revalidatePath will clear cache
-    revalidatePath("/", "layout");
-    redirect("/");
+    return { isError: false, statusCode: "01", message: "" };
   }
 }

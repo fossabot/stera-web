@@ -4,8 +4,10 @@ import { useLayoutEffect, useState } from "react";
 import { login, signup } from "./actions";
 import { Box, Button, Center, Divider, Title } from "@mantine/core";
 import { LoginForm, SignupForm } from "./authForm";
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
+  const router = useRouter();
   const [authMode, setAuthMode] = useState("login");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -22,9 +24,10 @@ export default function AuthPage() {
     console.log(`[page.tsx] CookieAuthMode: ${getCookie("authmode")}`);
     setAuthMode(cookieAuthMode);
     window.history.replaceState(null, "", `/${cookieAuthMode}`);
-    setTimeout(() => {
-      deleteCookie("authmode");
-    }, 100);
+    // setTimeout(() => {
+    //   // deleteCookie("authmode");
+    // }, 1000);
+    // router.refresh();
   }, []);
 
   async function callLogin() {
@@ -36,9 +39,19 @@ export default function AuthPage() {
     }
   }
   async function callSignup() {
-    const error = await signup(email, password);
-    console.error(error.message);
-    alert(error.message);
+    const result = await signup(email, password);
+    if (result.isError) {
+      console.error(result.message);
+      alert(result.message);
+    } else {
+      if (result.statusCode === "01") {
+        alert(
+          "新規登録されました!\n入力されたメールアドレスに、認証リンクが送信されています\n迷惑メールに振り分けられていないか注意してください"
+        );
+      } else {
+        alert("存在し得ないエラーが発生しているようです");
+      }
+    }
   }
   return (
     <>
