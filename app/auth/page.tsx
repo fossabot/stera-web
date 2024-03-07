@@ -2,7 +2,7 @@
 import { deleteCookie, getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { login, signup } from "./actions";
-import { Box, Button, Center, Divider } from "@mantine/core";
+import { Box, Button, Center, Divider, Title } from "@mantine/core";
 import { SignupForm } from "./authForm";
 
 export default function AuthPage() {
@@ -17,19 +17,35 @@ export default function AuthPage() {
   }
 
   useEffect(() => {
-    const cookieAuthMode = getCookie("authMode") ?? "login";
+    const cookieAuthMode = getCookie("authmode") ?? "login";
+    console.log(`[page.tsx] CookieAuthMode: ${cookieAuthMode}`);
     console.log(cookieAuthMode);
     setAuthMode(cookieAuthMode as "login" | "signup");
     window.history.replaceState(null, "", `/${cookieAuthMode}`);
     setTimeout(() => {
-      deleteCookie("authMode");
+      deleteCookie("authmode");
     }, 10);
   }, []);
+
+  async function callLogin() {
+    try {
+      await login(email, password);
+    } catch (error: any) {
+      console.error(error.message);
+      alert(error.message);
+    }
+  }
+  async function callSignup() {
+    const error = await signup(email, password);
+    console.error(error.message);
+    alert(error.message);
+  }
 
   return (
     <>
       <Center>
         <Box>
+          <Title order={2} c="gray.7" pb={5}>{authMode === "login" ? "ログイン" : "新規登録"}</Title>
           {authMode === "login" ? undefined : (
             <SignupForm
               email={email}
@@ -41,7 +57,7 @@ export default function AuthPage() {
           <Divider my={15} />
           {authMode === "login" ? (
             <div>
-              <Button fullWidth my={3} onClick={() => login(email, password)}>
+              <Button fullWidth my={3} onClick={() => callLogin()}>
                 ログイン
               </Button>
               <Button
@@ -55,7 +71,7 @@ export default function AuthPage() {
             </div>
           ) : (
             <div>
-              <Button fullWidth my={3} onClick={() => signup(email, password)}>
+              <Button fullWidth my={3} onClick={() => callSignup()}>
                 新規登録
               </Button>
               <Button

@@ -53,8 +53,12 @@ export function SignupPassword({
         multiplier += 1;
       }
     });
-    const resStrength = Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
-    setValid(resStrength == 100 ? true : false)
+    const resStrength = Math.max(
+      100 - (100 / (requirements.length + 1)) * multiplier,
+      10
+    );
+    const booleanStrength = resStrength == 100 ? true : false;
+    setValid(booleanStrength);
     return resStrength;
   }
   return (
@@ -83,7 +87,15 @@ export function SignupPassword({
         <PasswordRequirement label="10文字以上" meets={value.length >= 10} />
         {checks}
         <Divider my={10} />
-        <Link rel="noopener noreferrer" target="_blank" href="https://www.nisc.go.jp/pr/column/20220705.html"><Text component="a" size="xs">内閣サイバーセキュリティセンター(NISC)による、「インターネットの安全・安心ハンドブック」に基づいています</Text></Link>
+        <Link
+          rel="noopener noreferrer"
+          target="_blank"
+          href="https://www.nisc.go.jp/pr/column/20220705.html"
+        >
+          <Text component="a" size="xs">
+            内閣サイバーセキュリティセンター(NISC)による、「インターネットの安全・安心ハンドブック」に基づいています
+          </Text>
+        </Link>
       </Popover.Dropdown>
     </Popover>
   );

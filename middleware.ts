@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
   const reqCookies = req.cookies
   // https://github.com/vercel/next.js/discussions/34822
   function authPage(login: boolean) {
-    console.log(reqCookies.get("authmode")?.value)
+    console.log(`[middleware.ts] Cookie: ${reqCookies.get("authmode")?.value}`)
     if (reqCookies.has("authmode")) return NextResponse.rewrite(new URL(`/auth`, req.url));
     const res = NextResponse.redirect(url)
     res.cookies.set({

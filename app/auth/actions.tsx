@@ -1,45 +1,47 @@
-'use server'
+"use server";
 
-import { createDBServerClient } from '@/libs/db/client'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { createDBServerClient } from "@/libs/db/client";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function login(email: string, password: string) {
-  const supabase = createDBServerClient()
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email,
-    password
-  }
-
-  const { error } = await supabase.auth.signInWithPassword(data)
-
-  if (error) {
-    redirect('/error')
-  }
-
-  revalidatePath('/', 'layout')
-  redirect('/')
-}
-
-export async function signup(email: string, password: string) {
-  const supabase = createDBServerClient()
+  const supabase = createDBServerClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const data = {
     email,
     password,
-  }
+  };
 
-  const { error } = await supabase.auth.signUp(data)
+  const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect('/error')
+    redirect("/error");
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
+export async function signup(email: string, password: string) {
+  const supabase = createDBServerClient();
+
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email,
+    password,
+  };
+
+  const { error } = await supabase.auth.signUp(data);
+
+  if (error) {
+    console.log(error.message)
+    return { message: error.message };
+  } else {
+    // revalidatePath will clear cache
+    revalidatePath("/", "layout");
+    redirect("/");
+  }
 }
