@@ -1,28 +1,26 @@
 "use client";
-import { deleteCookie, getCookie } from "cookies-next";
+
 import { useLayoutEffect, useState } from "react";
 import { login, signup } from "./actions";
-import { Box, Button, Center, Divider, Title } from "@mantine/core";
+import { Button, Center, Divider, Title, Text, Paper } from "@mantine/core";
 import { LoginForm, SignupForm } from "./authForm";
-import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
-  const router = useRouter();
   const [authMode, setAuthMode] = useState("login");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
+
+  useLayoutEffect(() => {
+    if (location.pathname === "/signup") setAuthMode("signup");
+    else setAuthMode("login");
+  }, []);
 
   function toggle() {
     const newAuthMode = authMode === "login" ? "signup" : "login";
     setAuthMode(newAuthMode);
     window.history.replaceState(null, "", `/${newAuthMode}`);
   }
-
-  useLayoutEffect(() => {
-    if (location.pathname === "/signup") setAuthMode("signup");
-    else setAuthMode("login");
-  }, []);
 
   async function callLogin() {
     try {
@@ -50,11 +48,12 @@ export default function AuthPage() {
   return (
     <>
       <Center>
-        <Box maw="500px" w="95%" px="2.5%">
-          <Title order={2} c="gray.7" pb={5}>
-            {authMode === "login" ? "ログイン" : "新規登録"}
+        <Paper maw="550px" w="95%" px="2.5%" shadow="sm" radius="lg" py="20px">
+          <Title order={2} c="gray.7">
+            Steraneml {authMode === "login" ? "ログイン" : "新規登録"}
           </Title>
-          {authMode === "login" ? (
+          <Text>Stera・nemlサーバー共通アカウント{authMode === "login" ? "でログイン" : "を新規登録"}しましょう!</Text>
+          <div style={{paddingTop: "15px"}}>{authMode === "login" ? (
             <LoginForm
               email={email}
               setEmail={(newState: string) => setEmail(newState)}
@@ -71,6 +70,7 @@ export default function AuthPage() {
               setIsAllValid={(newState: boolean) => setIsAllValid(newState)}
             />
           )}
+          </div>
           <Divider my={15} />
           {authMode === "login" ? (
             <div>
@@ -111,7 +111,7 @@ export default function AuthPage() {
               </Button>
             </div>
           )}
-        </Box>
+        </Paper>
       </Center>
     </>
   );

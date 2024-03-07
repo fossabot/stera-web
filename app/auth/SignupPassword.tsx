@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
+import styles from "./authForm.module.css";
 
 export function SignupPassword({
   title,
@@ -79,6 +80,7 @@ export function SignupPassword({
             placeholder={placeholder}
             value={value}
             onChange={(event) => setValue(event.currentTarget.value)}
+            classNames={{ input: styles.input }}
           />
         </div>
       </Popover.Target>

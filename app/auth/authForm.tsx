@@ -3,6 +3,7 @@
 import { Input } from "@mantine/core";
 import { SignupPassword } from "./SignupPassword";
 import { useEffect, useState } from "react";
+import styles from "./authForm.module.css";
 
 export function SignupForm({
   email,
@@ -25,7 +26,7 @@ export function SignupForm({
   useEffect(() => {
     const IAV = isValidEmail(email) && isValidPassword;
     setIsAllValid(IAV);
-  }, [email, password]);
+  }, [email, password, isValidPassword, isValidPassword]);
   return (
     <div>
       <div>
@@ -42,6 +43,7 @@ export function SignupForm({
             onChange={(e) => setEmail(e.target.value)}
             className={isValidEmail(email) ? undefined : "p-invalid"}
             placeholder="your@email.addr"
+            classNames={{ input: styles.input }}
           />
         </Input.Wrapper>
       </div>
@@ -49,7 +51,7 @@ export function SignupForm({
         <Input.Wrapper
           withAsterisk
           label="パスワード"
-          description="パスワードの使いまわしは非推奨です"
+          description="パスワードの使いまわしはお勧めしません"
           error={isValidPassword ? "" : "安全ではないパスワードです"}
           inputWrapperOrder={["label", "input", "description", "error"]}
         >
