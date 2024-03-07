@@ -11,9 +11,11 @@ export async function middleware(req: NextRequest) {
     console.log(`[middleware.ts] Cookie: ${reqCookies.get("authmode")?.value}`)
     if (reqCookies.has("authmode")) return NextResponse.rewrite(new URL(`/auth`, req.url));
     const res = NextResponse.redirect(url)
+    const setMode = login ? 'login' : 'signup'
+    console.log(`[middleware.ts] setMode: ${setMode}`)
     res.cookies.set({
       name: 'authmode',
-      value: login ? 'login' : 'signup',
+      value: setMode,
       path: '/',
     })
     return res;

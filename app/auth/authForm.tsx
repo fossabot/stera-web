@@ -2,24 +2,30 @@
 
 import { Input } from "@mantine/core";
 import { SignupPassword } from "./SignupPassword";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function SignupForm({
   email,
   setEmail,
   password,
   setPassword,
+  setIsAllValid,
 }: {
   email: string;
   setEmail: any;
   password: string;
   setPassword: any;
+  setIsAllValid: any;
 }) {
   const isValidEmail = (val: string) =>
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       val
     );
   const [isValidPassword, setIsValidPassword] = useState(false);
+  useEffect(() => {
+    const IAV = isValidEmail(email) && isValidPassword;
+    setIsAllValid(IAV);
+  }, [email, password]);
   return (
     <div>
       <div>
@@ -58,4 +64,20 @@ export function SignupForm({
       </div>
     </div>
   );
+}
+
+export function LoginForm({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  setIsAllValid,
+}: {
+  email: string;
+  setEmail: any;
+  password: string;
+  setPassword: any;
+  setIsAllValid: any;
+}) {
+  return <></>;
 }

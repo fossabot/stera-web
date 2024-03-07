@@ -1,14 +1,15 @@
 "use client";
 import { deleteCookie, getCookie } from "cookies-next";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { login, signup } from "./actions";
 import { Box, Button, Center, Divider, Title } from "@mantine/core";
-import { SignupForm } from "./authForm";
+import { LoginForm, SignupForm } from "./authForm";
 
 export default function AuthPage() {
-  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+  const [authMode, setAuthMode] = useState("login");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isAllValid, setIsAllValid] = useState<boolean>(false);
 
   function toggle() {
     const newAuthMode = authMode === "login" ? "signup" : "login";
@@ -16,15 +17,14 @@ export default function AuthPage() {
     window.history.replaceState(null, "", `/${newAuthMode}`);
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const cookieAuthMode = getCookie("authmode") ?? "login";
-    console.log(`[page.tsx] CookieAuthMode: ${cookieAuthMode}`);
-    console.log(cookieAuthMode);
-    setAuthMode(cookieAuthMode as "login" | "signup");
+    console.log(`[page.tsx] CookieAuthMode: ${getCookie("authmode")}`);
+    setAuthMode(cookieAuthMode);
     window.history.replaceState(null, "", `/${cookieAuthMode}`);
     setTimeout(() => {
       deleteCookie("authmode");
-    }, 10);
+    }, 50);
   }, []);
 
   async function callLogin() {
@@ -40,24 +40,39 @@ export default function AuthPage() {
     console.error(error.message);
     alert(error.message);
   }
-
   return (
     <>
       <Center>
-        <Box>
-          <Title order={2} c="gray.7" pb={5}>{authMode === "login" ? "ログイン" : "新規登録"}</Title>
-          {authMode === "login" ? undefined : (
+        <Box maw="500px" w="95%" px="2.5%">
+          <Title order={2} c="gray.7" pb={5}>
+            {authMode === "login" ? "ログイン" : "新規登録"}
+          </Title>
+          {authMode === "login" ? (
+            <LoginForm
+              email={email}
+              setEmail={(newState: string) => setEmail(newState)}
+              password={password}
+              setPassword={(newState: string) => setPassword(newState)}
+              setIsAllValid={(newState: boolean) => setIsAllValid(newState)}
+            />
+          ) : (
             <SignupForm
               email={email}
               setEmail={(newState: string) => setEmail(newState)}
               password={password}
               setPassword={(newState: string) => setPassword(newState)}
+              setIsAllValid={(newState: boolean) => setIsAllValid(newState)}
             />
           )}
           <Divider my={15} />
           {authMode === "login" ? (
             <div>
-              <Button fullWidth my={3} onClick={() => callLogin()}>
+              <Button
+                fullWidth
+                my={3}
+                disabled={!isAllValid}
+                onClick={() => callLogin()}
+              >
                 ログイン
               </Button>
               <Button
@@ -71,7 +86,12 @@ export default function AuthPage() {
             </div>
           ) : (
             <div>
-              <Button fullWidth my={3} onClick={() => callSignup()}>
+              <Button
+                fullWidth
+                my={3}
+                disabled={!isAllValid}
+                onClick={() => callSignup()}
+              >
                 新規登録
               </Button>
               <Button
