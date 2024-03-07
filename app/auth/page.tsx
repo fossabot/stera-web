@@ -20,14 +20,8 @@ export default function AuthPage() {
   }
 
   useLayoutEffect(() => {
-    const cookieAuthMode = getCookie("authmode") ?? "login";
-    console.log(`[page.tsx] CookieAuthMode: ${getCookie("authmode")}`);
-    setAuthMode(cookieAuthMode);
-    window.history.replaceState(null, "", `/${cookieAuthMode}`);
-    // setTimeout(() => {
-    //   // deleteCookie("authmode");
-    // }, 1000);
-    // router.refresh();
+    if (location.pathname === "/signup") setAuthMode("signup");
+    else setAuthMode("login");
   }, []);
 
   async function callLogin() {

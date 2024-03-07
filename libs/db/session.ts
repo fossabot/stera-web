@@ -2,13 +2,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { DB_KEY, DB_URL } from '../common/commonVar'
 
-export async function updateDBSession(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  })
-
+export async function updateDBSession(request: NextRequest, response: NextResponse) {
   const supabase = createServerClient(
     DB_URL!,
     DB_KEY!,
