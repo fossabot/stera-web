@@ -7,7 +7,9 @@ import {
   Popover,
   Box,
   rem,
+  Divider,
 } from "@mantine/core";
+import Link from "next/link";
 import { useState } from "react";
 
 export function SignupPassword({
@@ -15,11 +17,13 @@ export function SignupPassword({
   placeholder,
   value,
   setValue,
+  setValid,
 }: {
   title: string;
   placeholder: string;
   value: string;
   setValue: any;
+  setValid: any;
 }) {
   // パスワード処理
   // https://mantine.dev/core/password-input/#strength-meter-example
@@ -32,24 +36,6 @@ export function SignupPassword({
   ];
   const [popoverOpened, setPopoverOpened] = useState(false);
   //   const [value, setValue] = useState("");
-  function PasswordRequirement({
-    meets,
-    label,
-  }: {
-    meets: boolean;
-    label: string;
-  }) {
-    return (
-      <Text
-        c={meets ? "teal" : "red"}
-        style={{ display: "flex", alignItems: "center" }}
-        mt={7}
-        size="sm"
-      >
-        {meets ? <span>*</span> : <span>X</span>} <Box ml={10}>{label}</Box>
-      </Text>
-    );
-  }
   const checks = requirements.map((requirement, index) => (
     <PasswordRequirement
       key={index}
@@ -67,8 +53,9 @@ export function SignupPassword({
         multiplier += 1;
       }
     });
-
-    return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
+    const resStrength = Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
+    setValid(resStrength == 100 ? true : false)
+    return resStrength;
   }
   return (
     <Popover
@@ -93,9 +80,30 @@ export function SignupPassword({
       </Popover.Target>
       <Popover.Dropdown>
         <Progress color={color} value={strength} size={5} mb="xs" />
-        <PasswordRequirement label="6文字以上" meets={value.length > 5} />
+        <PasswordRequirement label="10文字以上" meets={value.length >= 10} />
         {checks}
+        <Divider my={10} />
+        <Link rel="noopener noreferrer" target="_blank" href="https://www.nisc.go.jp/pr/column/20220705.html"><Text component="a" size="xs">内閣サイバーセキュリティセンター(NISC)による、「インターネットの安全・安心ハンドブック」に基づいています</Text></Link>
       </Popover.Dropdown>
     </Popover>
+  );
+}
+
+function PasswordRequirement({
+  meets,
+  label,
+}: {
+  meets: boolean;
+  label: string;
+}) {
+  return (
+    <Text
+      c={meets ? "teal" : "red"}
+      style={{ display: "flex", alignItems: "center" }}
+      mt={7}
+      size="sm"
+    >
+      {meets ? <span>*</span> : <span>X</span>} <Box ml={10}>{label}</Box>
+    </Text>
   );
 }

@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
   console.log(`[middleware.ts] Access: ${url}`)
   const reqCookies = req.cookies
   // https://github.com/vercel/next.js/discussions/34822
-  function authpage(login: boolean) {
+  function authPage(login: boolean) {
     console.log(reqCookies.get("authmode")?.value)
     if (reqCookies.has("authmode")) return NextResponse.rewrite(new URL(`/auth`, req.url));
     const res = NextResponse.redirect(url)
@@ -19,8 +19,8 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  if (url.pathname === "/login") return authpage(true);
-  if (url.pathname === "/signup") return authpage(false);
+  if (url.pathname === "/login") return authPage(true);
+  if (url.pathname === "/signup") return authPage(false);
   return await updateDBSession(req)
 }
 
