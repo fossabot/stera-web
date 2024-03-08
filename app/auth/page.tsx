@@ -10,10 +10,12 @@ export default function AuthPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
+  const [urlOrigin, setUrlOrigin] = useState<string>("")
 
   useLayoutEffect(() => {
     if (location.pathname === "/signup") setAuthMode("signup");
     else setAuthMode("login");
+    setUrlOrigin(location.origin)
   }, []);
 
   function toggle() {
@@ -31,7 +33,7 @@ export default function AuthPage() {
     }
   }
   async function callSignup() {
-    const result = await signup(email, password);
+    const result = await signup(email, password, urlOrigin);
     if (result.isError) {
       console.error(result.message);
       alert(result.message);
