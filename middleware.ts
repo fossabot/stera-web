@@ -15,7 +15,7 @@ function getLocale(req: NextRequest) {
     headers: { "accept-language": headersLocale },
   }).languages();
   const defaultLocale = "en-US";
-  const locales = ["en-US", "nl-NL", "nl"];
+  const locales = ["en-US", "ja"];
   const selectedLang = match(languages, locales, defaultLocale);
   return selectedLang.replace(/-/g, "");
 }
