@@ -4,13 +4,21 @@ import { useLayoutEffect, useState } from "react";
 import { login, signup } from "./actions";
 import { Button, Center, Divider, Title, Text, Paper } from "@mantine/core";
 import { LoginForm, SignupForm } from "./authForm";
+import { SERVER_NAME } from "@/libs/common/commonVar";
+import { getDictionary } from "../dicts";
 
-export default function AuthPage() {
+export default function AuthPage({
+  params: { lang },
+}: {
+  params: { lang: string };
+}) {
   const [authMode, setAuthMode] = useState("login");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
   const [urlOrigin, setUrlOrigin] = useState<string>("")
+
+  const dict = getDictionary(lang);
 
   useLayoutEffect(() => {
     if (location.pathname === "/signup") setAuthMode("signup");
@@ -52,9 +60,9 @@ export default function AuthPage() {
       <Center>
         <Paper maw="550px" w="95%" px="2.5%" shadow="sm" radius="lg" py="20px">
           <Title order={2} c="gray.7">
-            Steraneml {authMode === "login" ? "ログイン" : "新規登録"}
+            {SERVER_NAME} {authMode === "login" ? dict.auth.login : dict.auth.signup}
           </Title>
-          <Text>Stera・nemlサーバー共通アカウント{authMode === "login" ? "でログイン" : "を新規登録"}しましょう!</Text>
+          <Text>{SERVER_NAME}サーバーアカウント{authMode === "login" ? "でログイン" : "を新規登録"}しましょう!</Text>
           <div style={{paddingTop: "15px"}}>{authMode === "login" ? (
             <LoginForm
               email={email}

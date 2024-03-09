@@ -3,8 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button, Title, Text, Center } from "@mantine/core";
+import { getDictionary } from "./dicts";
+import { SERVER_NAME } from "@/libs/common/commonVar";
 
-export default function Home() {
+export default async function Landing({
+  params: { lang },
+}: {
+  params: { lang: string };
+}) {
+  const dict = getDictionary(lang);
   return (
     <>
       <Center>
@@ -16,14 +23,14 @@ export default function Home() {
             gradient={{ from: "blue", to: "cyan", deg: 90 }}
             py={10}
           >
-            Stera
+            {SERVER_NAME}
           </Text>
         </Title>
       </Center>
       <Button.Group>
         <Link href="/login">
           <Button component="a" variant="default">
-            ログイン
+            {dict.auth.login}
           </Button>
         </Link>
         <Link href="/signup">
@@ -31,7 +38,7 @@ export default function Home() {
             variant="gradient"
             gradient={{ from: "blue", to: "cyan", deg: 90 }}
           >
-            新規登録
+            {dict.auth.signup}
           </Button>
         </Link>
       </Button.Group>
