@@ -7,8 +7,7 @@ import Negotiator from "negotiator";
 const locales = ["en-US", "ja"];
 
 function getLocale(req: NextRequest) {
-  const headersLocale: string =
-    req.headers.get("accept-language") ?? "en-US";
+  const headersLocale: string = req.headers.get("accept-language") ?? "en-US";
   const languages = new Negotiator({
     headers: { "accept-language": headersLocale },
   }).languages();
@@ -22,29 +21,27 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   console.log(`[middleware.ts] Access NextURL: ${url}`);
   console.log(`[middleware.ts] Access Pathname: ${req.nextUrl.pathname}`);
-
   let res = NextResponse.next({
     request: {
       headers: req.headers,
     },
   });
-  let locale = getLocale(req);
 
+  function setLangCookie() {
+    const recLang = getLocale(req);
+    res.cookies.set("dispLang", recLang);
+  }
   // アクセス先のURLが、i18n仕様のものか確認
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  );
-  if (!pathnameHasLocale) {
-    const rewriteUrl = `/${locale}${pathname}`;
-    console.log(`[middleware.ts] Rewrite to -> ${rewriteUrl}`);
-    res = NextResponse.rewrite(new URL(rewriteUrl, req.url));
+  if (!req.cookies.has("dispLang")) {
+    setLangCookie();
+  } else if (!locales.includes(req.cookies.get("displang")?.value!)) {
+    setLangCookie();
   }
 
   // Customize
   if (["/login", "/signup"].includes(url.pathname)) {
     console.log("[middleware.ts] Auth");
-    const locale = getLocale(req);
-    res = NextResponse.rewrite(new URL(`/${locale}/auth`, req.nextUrl));
+    res = NextResponse.rewrite(new URL(`/auth`, req.nextUrl));
   }
   return await updateDBSession(req, res);
 }

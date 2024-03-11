@@ -1,13 +1,12 @@
 "use client";
 
 import { Button, Title } from "@mantine/core";
+import { getCookie } from 'cookies-next';
 import Link from "next/link";
+import { getDispLang } from "../lang";
 
-export default function TestIndex({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
+export default function TestIndex() {
+  const lang = getDispLang()
   const rooturl = "/test/";
   return (
     <>

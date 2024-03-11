@@ -1,7 +1,9 @@
-import enUS from "../../i18n/en-US.json"
-import ja from "../../i18n/ja.json"
+"use server"
 
-import i18nDictionaries from "../../i18n/interface"
+import enUS from "../i18n/en-US.json"
+import ja from "../i18n/ja.json"
+
+import i18nDictionaries from "../i18n/interface"
 
 interface DictionaryLoaderMap {
   [key: string]: () => i18nDictionaries;
@@ -12,7 +14,8 @@ const dictionaries: DictionaryLoaderMap = {
   ja: () => ja,
 };
 
-export const getDictionary = (locale: string) => {
+export const getDictionary = async (locale: string) => {
+  console.log(`[dicts.ts] Requested lang: ${locale}`)
   if (!dictionaries[locale]) {
     // localeに対応する関数が存在しない場合の処理
     throw new Error(`No dictionary available for locale: ${locale}`);

@@ -4,14 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button, Title, Text, Center } from "@mantine/core";
 import { getDictionary } from "./dicts";
-import { SERVER_NAME } from "@/libs/common/commonVar";
+import { SERVER_NAME, VAR_DEFAULT_DISPLANG } from "@/libs/common/commonVar";
+import { getDispLang } from "./lang";
+import { useLayoutEffect, useState } from "react";
+import enUS from "../i18n/en-US.json";
 
-export default async function Landing({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
-  const dict = getDictionary(lang);
+export default async function Landing() {
+  const [lang, setLang] = useState(VAR_DEFAULT_DISPLANG);
+  const [dict, setDict] = useState(enUS);
+  useLayoutEffect(() => {
+    (async () => {
+      const refreshedLang = "ja";
+      setLang(refreshedLang);
+      setDict(await getDictionary(refreshedLang));
+    })();
+  }, []);
   return (
     <>
       <Center>

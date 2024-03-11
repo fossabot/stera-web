@@ -6,18 +6,16 @@ import { Button, Center, Divider, Title, Text, Paper } from "@mantine/core";
 import { LoginForm, SignupForm } from "./authForm";
 import { SERVER_NAME } from "@/libs/common/commonVar";
 import { getDictionary } from "../dicts";
+import { getDispLang } from "../lang";
 
-export default function AuthPage({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
+export default function AuthPage() {
   const [authMode, setAuthMode] = useState("login");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
   const [urlOrigin, setUrlOrigin] = useState<string>("")
 
+  const lang = getDispLang()
   const dict = getDictionary(lang);
 
   useLayoutEffect(() => {
