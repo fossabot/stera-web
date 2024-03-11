@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import "./mantineGlobals.css"
+import "./mantineGlobals.css";
 import "./globals.css";
-import '@mantine/core/styles.css';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import "@mantine/core/styles.css";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ElapsedAffix } from "./debuger";
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,7 +22,10 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+          {children}
+          <ElapsedAffix />
+        </MantineProvider>
       </body>
     </html>
   );
