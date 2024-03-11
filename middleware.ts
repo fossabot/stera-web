@@ -7,15 +7,12 @@ import Negotiator from "negotiator";
 const locales = ["en-US", "ja"];
 
 function getLocale(req: NextRequest) {
-  // const headers = new Headers(req.headers)
-  // console.log(`[1] ${req.headers.get("accept-language")}`)
   const headersLocale: string =
-    req.headers.get("accept-language") ?? "en-US,en;q=0.5";
+    req.headers.get("accept-language") ?? "en-US";
   const languages = new Negotiator({
     headers: { "accept-language": headersLocale },
   }).languages();
   const defaultLocale = "en-US";
-  const locales = ["en-US", "ja"];
   const selectedLang = match(languages, locales, defaultLocale);
   return selectedLang.replace(/-/g, "");
 }
