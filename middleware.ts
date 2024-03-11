@@ -5,6 +5,7 @@ import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 const locales = ["en-US", "ja"];
+const codeLocales = ["enUS", "ja"]
 
 function getLocale(req: NextRequest) {
   const headersLocale: string = req.headers.get("accept-language") ?? "en-US";
@@ -34,7 +35,7 @@ export async function middleware(req: NextRequest) {
   // アクセス先のURLが、i18n仕様のものか確認
   if (!req.cookies.has("dispLang")) {
     setLangCookie();
-  } else if (!locales.includes(req.cookies.get("displang")?.value!)) {
+  } else if (!codeLocales.includes(req.cookies.get("dispLang")?.value!)) {
     setLangCookie();
   }
 

@@ -1,11 +1,11 @@
 import { type CookieOptions, createBrowserClient, createServerClient } from '@supabase/ssr'
-import { DB_KEY, DB_URL } from '../common/commonVar'
+import { VAR_DB_KEY, VAR_DB_URL } from '../common/commonVar'
 import { cookies } from 'next/headers'
 
 export function createDBBrowserClient() {
   return createBrowserClient(
-    DB_URL!,
-    DB_KEY!
+    VAR_DB_URL!,
+    VAR_DB_KEY!
   )
 }
 
@@ -13,8 +13,8 @@ export function createDBServerClient() {
   const cookieStore = cookies()
 
   return createServerClient(
-    DB_URL!,
-    DB_KEY!,
+    VAR_DB_URL!,
+    VAR_DB_KEY!,
     {
       cookies: {
         get(name: string) {

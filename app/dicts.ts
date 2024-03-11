@@ -1,4 +1,4 @@
-"use server"
+import "server-only"
 
 import enUS from "../i18n/en-US.json"
 import ja from "../i18n/ja.json"

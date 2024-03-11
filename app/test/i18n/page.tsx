@@ -1,12 +1,9 @@
-"use client";
-
 import { Button, Title } from "@mantine/core";
 import Link from "next/link";
-import { getCookie } from 'cookies-next';
-import { getDispLang } from "@/app/lang";
+import { getDispLang } from "@/app/langSCscripts";
 
-export default function i18nTest() {
-  const lang = getDispLang()
+export default async function i18nTest() {
+  const lang = await getDispLang()
   return (
     <>
       <Title order={1}>i18n test</Title>

@@ -1,12 +1,9 @@
-"use client";
-
 import { Button, Title } from "@mantine/core";
-import { getCookie } from 'cookies-next';
 import Link from "next/link";
-import { getDispLang } from "../lang";
+import { getDispLang } from "../langSC";
 
-export default function TestIndex() {
-  const lang = getDispLang()
+export default async function TestIndex() {
+  const lang = await getDispLang()
   const rooturl = "/test/";
   return (
     <>

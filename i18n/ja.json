@@ -2,5 +2,9 @@
     "auth": {
         "login": "ログイン",
         "signup": "新規登録"
+    },
+    "settings": {
+        "settings": "設定",
+        "language": "言語"
     }
 }

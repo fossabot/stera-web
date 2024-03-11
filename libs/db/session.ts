@@ -1,11 +1,11 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { DB_KEY, DB_URL } from '../common/commonVar'
+import { VAR_DB_KEY, VAR_DB_URL } from '../common/commonVar'
 
 export async function updateDBSession(request: NextRequest, response: NextResponse) {
   const supabase = createServerClient(
-    DB_URL!,
-    DB_KEY!,
+    VAR_DB_URL!,
+    VAR_DB_KEY!,
     {
       cookies: {
         get(name: string) {
