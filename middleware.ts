@@ -28,6 +28,12 @@ export async function middleware(req: NextRequest) {
     },
   });
 
+  // Customize
+  if (["/login", "/signup"].includes(url.pathname)) {
+    console.log("[middleware.ts] Auth");
+    res = NextResponse.rewrite(new URL(`/auth`, req.nextUrl));
+  }
+
   function setLangCookie() {
     const recLang = getLocale(req);
     res.cookies.set("dispLang", recLang);
@@ -35,15 +41,10 @@ export async function middleware(req: NextRequest) {
   // アクセス先のURLが、i18n仕様のものか確認
   if (!req.cookies.has("dispLang")) {
     setLangCookie();
-  } else if (!codeLocales.includes(req.cookies.get("dispLang")?.value!)) {
+  } else if (!codeLocales.includes(req.cookies.get("dispLang")!.value!)) {
     setLangCookie();
   }
 
-  // Customize
-  if (["/login", "/signup"].includes(url.pathname)) {
-    console.log("[middleware.ts] Auth");
-    res = NextResponse.rewrite(new URL(`/auth`, req.nextUrl));
-  }
   return await updateDBSession(req, res);
 }
 

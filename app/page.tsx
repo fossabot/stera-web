@@ -38,7 +38,7 @@ export default async function Landing() {
           </Button>
         </Link>
         <Divider my={20} />
-        <LangSelectCC dict={dict} />
+        <LangSelectCC nowDispLang={dispLang} dict={dict} />
     </>
   );
 }

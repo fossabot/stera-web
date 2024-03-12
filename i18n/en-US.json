@@ -1,7 +1,11 @@
 {
     "auth": {
         "login": "Login",
-        "signup": "Signup"
+        "signup": "Signup",
+        "form": {
+            "introLogin": "Login with your Stera account!",
+            "introSignup": "Let's make your Stera server account for free!"
+        }
     },
     "settings": {
         "settings": "Settings",

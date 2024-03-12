@@ -1,7 +1,11 @@
 {
     "auth": {
         "login": "ログイン",
-        "signup": "新規登録"
+        "signup": "新規登録",
+        "form": {
+            "introLogin": "Steraサーバーアカウントでログインしましょう!",
+            "introSignup": "無料でSteraサーバーアカウントを新規登録しましょう!"
+        }
     },
     "settings": {
         "settings": "設定",

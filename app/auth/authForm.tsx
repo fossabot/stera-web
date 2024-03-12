@@ -8,7 +8,7 @@ import i18nDictionaries from "@/i18n/interface";
 import { VAR_SERVER_NAME } from "@/libs/common/commonVar";
 import { useEffect, useLayoutEffect, useState } from "react";
 
-export function AuthMainForm({dict}: {dict: i18nDictionaries}) {
+export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
   const [authMode, setAuthMode] = useState("login");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -56,8 +56,7 @@ export function AuthMainForm({dict}: {dict: i18nDictionaries}) {
         {authMode === "login" ? dict.auth.login : dict.auth.signup}
       </Title>
       <Text>
-        {VAR_SERVER_NAME}サーバーアカウント
-        {authMode === "login" ? "でログイン" : "を新規登録"}しましょう!
+        {authMode === "login" ? dict.auth.form.introLogin : dict.auth.form.introSignup}
       </Text>
       <div style={{ paddingTop: "15px" }}>
         {authMode === "login" ? (
@@ -87,10 +86,10 @@ export function AuthMainForm({dict}: {dict: i18nDictionaries}) {
             disabled={!isAllValid}
             onClick={() => callLogin()}
           >
-            ログイン
+            {dict.auth.login}
           </Button>
           <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
-            新規登録に切り替える
+            {dict.auth.signup}
           </Button>
         </div>
       ) : (
@@ -101,10 +100,10 @@ export function AuthMainForm({dict}: {dict: i18nDictionaries}) {
             disabled={!isAllValid}
             onClick={() => callSignup()}
           >
-            新規登録
+            {dict.auth.signup}
           </Button>
           <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
-            ログインに切り替える
+            {dict.auth.login}
           </Button>
         </div>
       )}
