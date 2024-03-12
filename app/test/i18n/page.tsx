@@ -1,6 +1,6 @@
 import { Button, Title } from "@mantine/core";
 import Link from "next/link";
-import { getDispLang } from "@/app/langSCscripts";
+import { getDispLang } from "@/app/langSC";
 
 export default async function i18nTest() {
   const lang = await getDispLang()
