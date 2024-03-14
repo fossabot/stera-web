@@ -26,7 +26,7 @@ export function LangSelectCC({
     setTimeout(() => {
       if (nowDispLang !== dispLang) window.location.reload();
     }, 10);
-  }, [dispLang]);
+  }, [dispLang, nowDispLang]);
 
   return (
     <>

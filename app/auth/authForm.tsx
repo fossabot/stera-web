@@ -132,7 +132,7 @@ function SignupForm({
   useEffect(() => {
     const IAV = isValidEmail(email) && isValidPassword;
     setIsAllValid(IAV);
-  }, [email, password, isValidPassword, isValidPassword]);
+  }, [email, password, isValidPassword, setIsAllValid]);
   return (
     <div>
       <div>
