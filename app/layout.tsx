@@ -73,13 +73,7 @@ export default async function RootLayout({
 }) {
   const dispLang = await getDispLang();
   let HTMLLang = dispLang.toLocaleLowerCase();
-  if (dispLang === "enUS") {
-    HTMLLang = "en-US";
-  }
-  if (dispLang === "enGB") {
-    HTMLLang = "en-GB";
-  }
-  const displayVersionAffix = process.env.NODE_ENV === "development";
+  const displayVersionAffix = process.env.NODE_ENV === "development" || process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
   return (
     <html lang={dispLang}>
       <head>

@@ -19,7 +19,7 @@ export function LangSelectCC({
   const languages = [
     { value: "RESET", label: "Reset to default value" },
     { value: "ja", label: "日本語" },
-    { value: "enUS", label: "English" },
+    { value: "en-US", label: "English" },
   ];
 
   useEffect(() => {

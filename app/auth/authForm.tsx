@@ -56,11 +56,14 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
         {authMode === "login" ? dict.auth.login : dict.auth.signup}
       </Title>
       <Text>
-        {authMode === "login" ? dict.auth.form.introLogin : dict.auth.form.introSignup}
+        {authMode === "login"
+          ? dict.auth.form.intro.login
+          : dict.auth.form.intro.signup}
       </Text>
       <div style={{ paddingTop: "15px" }}>
         {authMode === "login" ? (
           <LoginForm
+            dict={dict}
             email={email}
             setEmail={(newState: string) => setEmail(newState)}
             password={password}
@@ -69,6 +72,7 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
           />
         ) : (
           <SignupForm
+            dict={dict}
             email={email}
             setEmail={(newState: string) => setEmail(newState)}
             password={password}
@@ -89,7 +93,7 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
             {dict.auth.login}
           </Button>
           <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
-            {dict.auth.signup}
+            {dict.auth.form.switch.toSignup}
           </Button>
         </div>
       ) : (
@@ -103,7 +107,7 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
             {dict.auth.signup}
           </Button>
           <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
-            {dict.auth.login}
+            {dict.auth.form.switch.toLogin}
           </Button>
         </div>
       )}
@@ -112,12 +116,14 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
 }
 
 function SignupForm({
+  dict,
   email,
   setEmail,
   password,
   setPassword,
   setIsAllValid,
 }: {
+  dict: i18nDictionaries;
   email: string;
   setEmail: any;
   password: string;
@@ -137,9 +143,73 @@ function SignupForm({
     <div>
       <div>
         <Input.Wrapper
-          label="メールアドレス"
-          description="捨てメアドは使用せず、継続的に利用できるアドレスで登録してください"
-          error={isValidEmail(email) ? "" : "無効なメールアドレスです"}
+          label={dict.auth.emailAddress}
+          description={dict.auth.form.note.noTempEmailAddr}
+          error={isValidEmail(email) ? "" : dict.auth.form.invalid.emailAddress}
+          inputWrapperOrder={["label", "input", "description", "error"]}
+          withAsterisk
+        >
+          <Input
+            id="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={isValidEmail(email) ? undefined : "p-invalid"}
+            placeholder="your@email.addr"
+            classNames={{ input: styles.input }}
+          />
+        </Input.Wrapper>
+      </div>
+      <div style={{ paddingTop: 10 }}>
+        <Input.Wrapper
+          description={dict.auth.form.note.notRECSamePassword}
+          error={isValidPassword ? "" : dict.auth.form.invalid.password}
+          inputWrapperOrder={["label", "input", "description", "error"]}
+        >
+          <SignupPassword
+            dict={dict}
+            title={dict.auth.password}
+            placeholder="*********"
+            value={password}
+            setValue={(newState: string) => setPassword(newState)}
+            setValid={(newState: boolean) => setIsValidPassword(newState)}
+          />
+        </Input.Wrapper>
+      </div>
+    </div>
+  );
+}
+
+function LoginForm({
+  dict,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  setIsAllValid,
+}: {
+  dict: i18nDictionaries;
+  email: string;
+  setEmail: any;
+  password: string;
+  setPassword: any;
+  setIsAllValid: any;
+}) {
+  const isValidEmail = (val: string) =>
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+      val
+    );
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  useEffect(() => {
+    const IAV = isValidEmail(email) && isValidPassword;
+    setIsAllValid(IAV);
+  }, [email, password, isValidPassword, setIsAllValid]);
+  return (
+    <>
+      <div>
+        <Input.Wrapper
+          label={dict.auth.emailAddress}
+          description={dict.auth.form.note.noTempEmailAddr}
+          error={isValidEmail(email) ? "" : dict.auth.form.invalid.emailAddress}
           inputWrapperOrder={["label", "input", "description", "error"]}
           withAsterisk
         >
@@ -156,12 +226,13 @@ function SignupForm({
       <div style={{ paddingTop: 10 }}>
         <Input.Wrapper
           withAsterisk
-          label="パスワード"
-          description="パスワードの使いまわしはお勧めしません"
-          error={isValidPassword ? "" : "安全ではないパスワードです"}
+          label={dict.auth.password}
+          description={dict.auth.form.note.notRECSamePassword}
+          error={isValidPassword ? "" : dict.auth.form.invalid.password}
           inputWrapperOrder={["label", "input", "description", "error"]}
         >
           <SignupPassword
+            dict={dict}
             title=""
             placeholder="*********"
             value={password}
@@ -170,22 +241,6 @@ function SignupForm({
           />
         </Input.Wrapper>
       </div>
-    </div>
+    </>
   );
-}
-
-function LoginForm({
-  email,
-  setEmail,
-  password,
-  setPassword,
-  setIsAllValid,
-}: {
-  email: string;
-  setEmail: any;
-  password: string;
-  setPassword: any;
-  setIsAllValid: any;
-}) {
-  return <></>;
 }

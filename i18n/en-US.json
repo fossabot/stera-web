@@ -1,14 +1,37 @@
 {
-    "auth": {
-        "login": "Login",
-        "signup": "Signup",
-        "form": {
-            "introLogin": "Login with your Stera account!",
-            "introSignup": "Let's make your Stera server account for free!"
-        }
-    },
-    "settings": {
-        "settings": "Settings",
-        "language": "Language"
+  "auth": {
+    "login": "Login",
+    "signup": "Signup",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "form": {
+      "intro": {
+        "login": "Login with your Stera account!",
+        "signup": "Let's make your Stera server account for free!"
+      },
+      "note": {
+        "noTempEmailAddr": "Do not use Disposable email address, please",
+        "notRECSamePassword": "We don't recommend reusing the same password"
+      },
+      "switch": {
+        "toLogin": "Switch to Login",
+        "toSignup": "Switch to Signup"
+      },
+      "invalid": {
+        "emailAddress": "Invalid email address",
+        "password": "Invalid password"
+      },
+      "requirements": {
+        "includeNumber": "Include Number",
+        "includeLowercaseAlphabet": "Include Lowercase alphabet",
+        "includeUppercaseAlphabet": "Include Uppercase alphabet",
+        "includeSymbol": "Include Symbol",
+        "moreThan10Characters": "More than 10 characters"
+      }
     }
+  },
+  "settings": {
+    "settings": "Settings",
+    "language": "Language"
+  }
 }

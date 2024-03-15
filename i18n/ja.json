@@ -1,14 +1,37 @@
 {
-    "auth": {
-        "login": "ログイン",
-        "signup": "新規登録",
-        "form": {
-            "introLogin": "Steraサーバーアカウントでログインしましょう!",
-            "introSignup": "無料でSteraサーバーアカウントを新規登録しましょう!"
-        }
-    },
-    "settings": {
-        "settings": "設定",
-        "language": "言語"
+  "auth": {
+    "login": "ログイン",
+    "signup": "新規登録",
+    "emailAddress": "メールアドレス",
+    "password": "パスワード",
+    "form": {
+      "intro": {
+        "login": "Steraサーバーアカウントでログインしましょう!",
+        "signup": "無料でSteraサーバーアカウントを新規登録しましょう!"
+      },
+      "note": {
+        "noTempEmailAddr": "捨てメアドは使用せず、継続的に利用できるアドレスで登録してください",
+        "notRECSamePassword": "パスワードの使いまわしはお勧めしません"
+      },
+      "switch": {
+        "toLogin": "ログインに切り替える",
+        "toSignup": "新規登録に切り替える"
+      },
+      "invalid": {
+        "emailAddress": "無効なメールアドレスです",
+        "password": "無効なパスワードです"
+      },
+      "requirements": {
+        "includeNumber": "数字を含む",
+        "includeLowercaseAlphabet": "小文字のアルファベットを含む",
+        "includeUppercaseAlphabet": "大文字のアルファベットを含む",
+        "includeSymbol": "記号を含む",
+        "moreThan10Characters": "10文字以上"
+      }
     }
+  },
+  "settings": {
+    "settings": "設定",
+    "language": "言語"
+  }
 }

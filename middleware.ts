@@ -5,7 +5,6 @@ import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 const locales = ["en-US", "ja"];
-const codeLocales = ["enUS", "ja"];
 
 function getLocale(req: NextRequest) {
   const headersLocale: string = req.headers.get("accept-language") ?? "en-US";
@@ -14,7 +13,8 @@ function getLocale(req: NextRequest) {
   }).languages();
   const defaultLocale = "en-US";
   const selectedLang = match(languages, locales, defaultLocale);
-  return selectedLang.replace(/-/g, "");
+  // return selectedLang.replace(/-/g, "");
+  return selectedLang
 }
 
 export async function middleware(req: NextRequest) {
@@ -42,7 +42,7 @@ export async function middleware(req: NextRequest) {
   // アクセス先のURLが、i18n仕様のものか確認
   if (!req.cookies.has("dispLang")) {
     return setLangCookie();
-  } else if (!codeLocales.includes(req.cookies.get("dispLang")!.value!)) {
+  } else if (!locales.includes(req.cookies.get("dispLang")!.value!)) {
     return setLangCookie();
   }
 
@@ -69,6 +69,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    "/((?!_next/static|sw.js|sw.js.map|workbox-*.js|workbox-*.js.map|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|json)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sw.js|sw.js.map|workbox-*.js|workbox-*.js.map|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|json)$).*)",
   ],
 };

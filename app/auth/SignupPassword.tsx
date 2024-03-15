@@ -12,14 +12,17 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import styles from "./authForm.module.css";
+import i18nDictionaries from "@/i18n/interface";
 
 export function SignupPassword({
+  dict,
   title,
   placeholder,
   value,
   setValue,
   setValid,
 }: {
+  dict: i18nDictionaries;
   title: string;
   placeholder: string;
   value: string;
@@ -30,10 +33,10 @@ export function SignupPassword({
   // https://mantine.dev/core/password-input/#strength-meter-example
   // TIPS: ハイフンは、最初が最後に指定しないと、範囲指定と認識されてしまう
   const requirements = [
-    { re: /[0-9]/, label: "数字を含む" },
-    { re: /[a-z]/, label: "小文字のアルファベットを含む" },
-    { re: /[A-Z]/, label: "大文字のアルファベットを含む" },
-    { re: /[-$&+,:;=?@#|'<>.^*()%!_"]/, label: "記号を含む" },
+    { re: /[0-9]/, label: dict.auth.form.requirements.includeNumber },
+    { re: /[a-z]/, label: dict.auth.form.requirements.includeLowercaseAlphabet },
+    { re: /[A-Z]/, label: dict.auth.form.requirements.includeUppercaseAlphabet },
+    { re: /[-$&+,:;=?@#|'<>.^*()%!_"]/, label: dict.auth.form.requirements.includeSymbol },
   ];
   const [popoverOpened, setPopoverOpened] = useState(false);
   //   const [value, setValue] = useState("");
@@ -86,7 +89,7 @@ export function SignupPassword({
       </Popover.Target>
       <Popover.Dropdown>
         <Progress color={color} value={strength} size={5} mb="xs" />
-        <PasswordRequirement label="10文字以上" meets={value.length >= 10} />
+        <PasswordRequirement label={dict.auth.form.requirements.moreThan10Characters} meets={value.length >= 10} />
         {checks}
         <Divider my={10} />
         <Link
