@@ -4,6 +4,7 @@ import { getDispLang } from "../langSC";
 import { getDictionary } from "../dicts";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
+import { LinkButton } from "../components/extendedUI";
 
 export default async function ErrorPage() {
   const dispLang = await getDispLang();
@@ -29,8 +30,9 @@ export default async function ErrorPage() {
       </Center>
       <Center><Divider my={40} w="90%" /></Center>
       <Center>
-      <Textarea w="70%" label="Error detail" maw="600px" readOnly value={errorDetail} />
+      <Textarea w="80%" label="Error detail" maw="800px" readOnly value={errorDetail} />
       </Center>
+      <Center pt={50}><LinkButton href="/" variant="default">Return to top page</LinkButton></Center>
     </>
   );
 }

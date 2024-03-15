@@ -10,7 +10,7 @@ export default async function AuthInit() {
   const dict = await getDictionary(lang);
   return (
     <>
-      <Center>
+      <Center style={{ height: "98vh" }}>
         <Paper
           maw="550px"
           w="95%"
@@ -18,6 +18,7 @@ export default async function AuthInit() {
           shadow="sm"
           radius="lg"
           py="20px"
+          withBorder
         ><AuthInitForm /></Paper>
       </Center>
     </>

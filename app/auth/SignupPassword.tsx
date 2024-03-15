@@ -78,8 +78,6 @@ export function SignupPassword({
           onBlurCapture={() => setPopoverOpened(false)}
         >
           <PasswordInput
-            withAsterisk
-            label={title}
             placeholder={placeholder}
             value={value}
             onChange={(event) => setValue(event.currentTarget.value)}

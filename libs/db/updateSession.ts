@@ -53,7 +53,13 @@ export async function updateDBSession(
   } = await supabase.auth.getUser();
   if (user) {
     if (user.user_metadata.initialized !== "true")
-      response = NextResponse.redirect(new URL("/auth/init", request.nextUrl));
+      if (
+        request.nextUrl.pathname !== "/auth/init" &&
+        request.nextUrl.pathname !== "/auth/logout"
+      )
+        response = NextResponse.redirect(
+          new URL("/auth/init", request.nextUrl)
+        );
   }
 
   return response;

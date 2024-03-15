@@ -2,11 +2,22 @@
 
 import { SignupPassword } from "./SignupPassword";
 import { login, signup } from "./actions";
-import { Button, Divider, Title, Text, Input } from "@mantine/core";
+import {
+  Button,
+  Divider,
+  Title,
+  Text,
+  Input,
+  PinInput,
+  Modal,
+  LoadingOverlay,
+  Box,
+} from "@mantine/core";
 import styles from "./authForm.module.css";
 import i18nDictionaries from "@/i18n/interface";
 import { VAR_SERVER_NAME } from "@/libs/common/commonVar";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
 
 export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
   const [authMode, setAuthMode] = useState("login");
@@ -14,6 +25,9 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
   const [password, setPassword] = useState<string>("");
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
   const [urlOrigin, setUrlOrigin] = useState<string>("");
+  const [signupPIN, setSignupPIN] = useState<number | null>(null);
+  const [processing, setProcessing] = useState<boolean>(false);
+
   useLayoutEffect(() => {
     if (location.pathname === "/signup") setAuthMode("signup");
     else setAuthMode("login");
@@ -27,6 +41,7 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
   }
 
   async function callLogin() {
+    setProcessing(true);
     try {
       await login(email, password);
     } catch (error: any) {
@@ -34,23 +49,14 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
       alert(error.message);
     }
   }
-  async function callSignup() {
-    const result = await signup(email, password, urlOrigin);
-    if (result.isError) {
-      console.error(result.message);
-      alert(result.message);
-    } else {
-      if (result.statusCode === "01") {
-        alert(
-          "新規登録されました!\n入力されたメールアドレスに、認証リンクが送信されています\n迷惑メールに振り分けられていないか注意してください"
-        );
-      } else {
-        alert("存在し得ないエラーが発生しているようです");
-      }
-    }
-  }
+
   return (
-    <>
+    <Box pos="relative">
+      <LoadingOverlay
+        visible={processing}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
       <Title order={2} c="gray.7">
         {VAR_SERVER_NAME}{" "}
         {authMode === "login" ? dict.auth.login : dict.auth.signup}
@@ -77,11 +83,14 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
             setEmail={(newState: string) => setEmail(newState)}
             password={password}
             setPassword={(newState: string) => setPassword(newState)}
-            setIsAllValid={(newState: boolean) => setIsAllValid(newState)}
+            signupPIN={signupPIN}
+            setSignupPIN={(newState: number) => setSignupPIN(newState)}
+            urlOrigin={urlOrigin}
+            setProcessing={(newState: boolean) => setProcessing(newState)}
           />
         )}
       </div>
-      <Divider my={15} />
+      <Divider my={10} />
       {authMode === "login" ? (
         <div>
           <Button
@@ -97,21 +106,11 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
           </Button>
         </div>
       ) : (
-        <div>
-          <Button
-            fullWidth
-            my={3}
-            disabled={!isAllValid}
-            onClick={() => callSignup()}
-          >
-            {dict.auth.signup}
-          </Button>
-          <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
-            {dict.auth.form.switch.toLogin}
-          </Button>
-        </div>
+        <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
+          {dict.auth.form.switch.toLogin}
+        </Button>
       )}
-    </>
+    </Box>
   );
 }
 
@@ -121,15 +120,40 @@ function SignupForm({
   setEmail,
   password,
   setPassword,
-  setIsAllValid,
+  signupPIN,
+  setSignupPIN,
+  urlOrigin,
+  setProcessing
 }: {
   dict: i18nDictionaries;
   email: string;
   setEmail: any;
   password: string;
   setPassword: any;
-  setIsAllValid: any;
+  signupPIN: number | null;
+  setSignupPIN: any;
+  urlOrigin: string;
+  setProcessing: any;
 }) {
+  const [isAllValid, setIsAllValid] = useState<boolean>(false);
+  const [confirmPIN, setConfirmPIN] = useState<number | null>(null);
+  async function callSignup() {
+    setProcessing(true);
+    const result = await signup(email, password, urlOrigin, signupPIN!);
+    if (result.isError) {
+      console.error(result.message);
+      alert(result.message);
+    } else {
+      if (result.statusCode === "01") {
+        alert(
+          "新規登録されました!\n入力されたメールアドレスに、認証リンクが送信されています\n迷惑メールに振り分けられていないか注意してください"
+        );
+      } else {
+        alert("存在し得ないエラーが発生しているようです");
+      }
+    }
+  }
+  const [opened, { open, close }] = useDisclosure(false);
   const isValidEmail = (val: string) =>
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       val
@@ -146,7 +170,7 @@ function SignupForm({
           label={dict.auth.emailAddress}
           description={dict.auth.form.note.noTempEmailAddr}
           error={isValidEmail(email) ? "" : dict.auth.form.invalid.emailAddress}
-          inputWrapperOrder={["label", "input", "description", "error"]}
+          inputWrapperOrder={["label", "description", "input", "error"]}
           withAsterisk
         >
           <Input
@@ -161,9 +185,11 @@ function SignupForm({
       </div>
       <div style={{ paddingTop: 10 }}>
         <Input.Wrapper
+          withAsterisk
+          label={dict.auth.password}
           description={dict.auth.form.note.notRECSamePassword}
           error={isValidPassword ? "" : dict.auth.form.invalid.password}
-          inputWrapperOrder={["label", "input", "description", "error"]}
+          inputWrapperOrder={["label", "description", "input", "error"]}
         >
           <SignupPassword
             dict={dict}
@@ -174,6 +200,48 @@ function SignupForm({
             setValid={(newState: boolean) => setIsValidPassword(newState)}
           />
         </Input.Wrapper>
+      </div>
+      <div style={{ paddingTop: 10 }}>
+        <Input.Wrapper
+          label="Signup PIN"
+          withAsterisk
+          description="新規登録を完了するために必要です"
+        >
+          <PinInput
+            length={4}
+            mask
+            type="number"
+            value={signupPIN?.toString()}
+            onChange={(e) => setSignupPIN(Number(e))}
+          />
+        </Input.Wrapper>
+      </div>
+      <Modal opened={opened} onClose={close} title="確認" centered>
+        <Input.Wrapper
+          label="Retype Signup PIN"
+          withAsterisk
+          description="確認のために、再度PINを入力してください"
+        >
+          <PinInput
+            length={4}
+            mask
+            type="number"
+            value={confirmPIN?.toString()}
+            onChange={(e) => setConfirmPIN(Number(e))}
+          />
+        </Input.Wrapper>
+        <Button
+          disabled={signupPIN !== confirmPIN}
+          onClick={() => callSignup()}
+          mt={20}
+        >
+          登録する
+        </Button>
+      </Modal>
+      <div style={{ paddingTop: 10, paddingBottom: 10 }}>
+        <Button fullWidth my={3} disabled={!isAllValid} onClick={() => open()}>
+          {dict.auth.signup}
+        </Button>
       </div>
     </div>
   );

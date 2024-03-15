@@ -30,7 +30,8 @@ export async function login(email: string, password: string) {
 export async function signup(
   email: string,
   password: string,
-  urlOrigin: string
+  urlOrigin: string,
+  signupPIN: number,
 ) {
   const supabase = createDBServerClient();
   const emailRedirectTo = `${urlOrigin}/auth/confirm`;
@@ -43,6 +44,9 @@ export async function signup(
     password,
     options: {
       emailRedirectTo,
+      data: {
+        signupPIN,
+      }
     },
   };
 
