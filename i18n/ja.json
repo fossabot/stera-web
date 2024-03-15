@@ -33,5 +33,11 @@
   "settings": {
     "settings": "設定",
     "language": "言語"
+  },
+  "error": {
+    "page": {
+      "apologize": "ご不便をおかけし申し訳ございません...",
+      "noDescription": "エラーの詳細は、提供されませんでした"
+    }
   }
 }

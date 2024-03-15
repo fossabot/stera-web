@@ -10,7 +10,7 @@ export default async function AuthPage() {
   return (
     <>
       <Center>
-        <Paper maw="550px" w="95%" px="2.5%" shadow="sm" radius="lg" py="20px">
+        <Paper maw="550px" w="93%" px="2.5%" shadow="sm" radius="lg" py="20px">
           <AuthMainForm dict={dict} />
         </Paper>
       </Center>

@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { updateDBSession } from "./libs/db/session";
+import { updateDBSession } from "./libs/db/updateSession";
 
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
@@ -46,7 +46,7 @@ export async function middleware(req: NextRequest) {
     return setLangCookie();
   }
 
-  // Customize
+  // Auth
   if (["/login", "/signup"].includes(url.pathname)) {
     console.log("[middleware.ts] Auth");
     res = NextResponse.rewrite(new URL(`/auth`, req.nextUrl), {

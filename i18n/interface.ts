@@ -34,4 +34,10 @@ export default interface i18nDictionaries {
     settings: string;
     language: string;
   };
+  error: {
+    page: {
+      apologize: string;
+      noDescription: string;
+    }
+  }
 }
