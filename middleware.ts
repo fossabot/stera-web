@@ -5,7 +5,7 @@ import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 const locales = ["en-US", "ja"];
-const codeLocales = ["enUS", "ja"]
+const codeLocales = ["enUS", "ja"];
 
 function getLocale(req: NextRequest) {
   const headersLocale: string = req.headers.get("accept-language") ?? "en-US";
@@ -28,23 +28,35 @@ export async function middleware(req: NextRequest) {
     },
   });
 
-  // Customize
-  if (["/login", "/signup"].includes(url.pathname)) {
-    console.log("[middleware.ts] Auth");
-    res = NextResponse.rewrite(new URL(`/auth`, req.nextUrl));
-  }
-
   function setLangCookie() {
     const recLang = getLocale(req);
+    res = NextResponse.redirect(new URL(req.url));
+    let headers = req.headers
+    for (const [key, value] of headers.entries()) {
+      res.headers.set(key, value);
+    }
     res.cookies.set("dispLang", recLang);
+    console.log("[middleware.ts] i18n Refrech Redirect")
+    return res;
   }
   // アクセス先のURLが、i18n仕様のものか確認
   if (!req.cookies.has("dispLang")) {
-    setLangCookie();
+    return setLangCookie();
   } else if (!codeLocales.includes(req.cookies.get("dispLang")!.value!)) {
-    setLangCookie();
+    return setLangCookie();
   }
 
+  // Customize
+  if (["/login", "/signup"].includes(url.pathname)) {
+    console.log("[middleware.ts] Auth");
+    res = NextResponse.rewrite(new URL(`/auth`, req.nextUrl), {
+      request: {
+        headers: req.headers,
+      },
+    });
+  }
+
+  // res.headers.set("cache-control", "0");
   return await updateDBSession(req, res);
 }
 

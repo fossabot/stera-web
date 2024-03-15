@@ -6,19 +6,28 @@ import { VAR_SERVER_NAME } from "@/libs/common/commonVar";
 import { getDispLang } from "./langSC";
 import { LangSelectCC } from "./langCC";
 
+import { MuseoModerno } from "next/font/google"
+
+const classMuseoModerno = MuseoModerno({
+  subsets: ['latin'],
+  display: 'swap',
+})
+
 export default async function Landing() {
   const dispLang = await getDispLang()
   const dict = await getDictionary(dispLang)
   return (
     <>
       <Center>
-        <Title order={1}>
+        <Title order={1} size={45}>
           <Text
             inherit
             fw={900}
             variant="gradient"
             gradient={{ from: "blue", to: "cyan", deg: 90 }}
-            py={10}
+            pt={10}
+            pb={15}
+            className={classMuseoModerno.className}
           >
             {VAR_SERVER_NAME}
           </Text>

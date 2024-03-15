@@ -6,6 +6,21 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { ElapsedAffix } from "./debuger";
 import { getDispLang } from "./langSC";
 // const inter = Inter({ subsets: ["latin"] });
+import { Hind } from "next/font/google";
+import { Noto_Sans_JP } from "next/font/google";
+
+const classHind = Hind({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "300",
+  variable: "--font-hind",
+});
+
+const classNotoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-noto-sans-jp",
+});
 
 const APP_NAME = "Stera";
 const APP_DEFAULT_TITLE = "Stera Federated SNS";
@@ -64,7 +79,7 @@ export default async function RootLayout({
   if (dispLang === "enGB") {
     HTMLLang = "en-GB";
   }
-  const displayVersionAffix = process.env.NODE_ENV === "development"
+  const displayVersionAffix = process.env.NODE_ENV === "development";
   return (
     <html lang={dispLang}>
       <head>
@@ -73,7 +88,7 @@ export default async function RootLayout({
         <meta name="theme-color" content="#0375e4" />
         <ColorSchemeScript />
       </head>
-      <body>
+      <body className={`${classNotoSansJP.className}`}>
         <MantineProvider>
           {children}
           {displayVersionAffix ? <ElapsedAffix /> : null}

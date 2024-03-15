@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button, NativeSelect, Text } from "@mantine/core";
 import i18nDictionaries from "@/i18n/interface";
 import { useEffect, useState } from "react";
-import { setCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 
 export function LangSelectCC({
   nowDispLang,
@@ -17,12 +17,17 @@ export function LangSelectCC({
   const [dispLang, setDispLang] = useState<string>(nowDispLang);
 
   const languages = [
+    { value: "RESET", label: "Reset to default value" },
     { value: "ja", label: "日本語" },
     { value: "enUS", label: "English" },
   ];
 
   useEffect(() => {
-    setCookie("dispLang", dispLang);
+    if (dispLang === "RESET") {
+      deleteCookie("dispLang");
+    } else {
+      setCookie("dispLang", dispLang);
+    }
     setTimeout(() => {
       if (nowDispLang !== dispLang) window.location.reload();
     }, 10);
