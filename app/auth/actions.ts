@@ -24,7 +24,7 @@ export async function login(email: string, password: string) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/auth/callback");
 }
 
 export async function signup(

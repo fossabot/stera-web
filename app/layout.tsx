@@ -10,6 +10,7 @@ import { getDispLang } from "./langSC";
 import { Hind } from "next/font/google";
 import { Noto_Sans_JP } from "next/font/google";
 import { Notifications } from "@mantine/notifications";
+import ProgressBarProviders from "./components/ProgressBarProvider";
 
 const classHind = Hind({
   subsets: ["latin"],
@@ -88,6 +89,7 @@ export default async function RootLayout({
       </head>
       <body className={`${classNotoSansJP.className}`}>
         <MantineProvider>
+          <ProgressBarProviders />
           <Notifications position="top-center" autoClose={4000} />
           {children}
           {displayVersionAffix ? <ElapsedAffix /> : null}

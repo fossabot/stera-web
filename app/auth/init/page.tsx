@@ -4,10 +4,12 @@ import { getDictionary } from "@/app/dicts";
 import { getDispLang } from "@/app/langSC";
 import { Center, Paper } from "@mantine/core";
 import { AuthInitForm } from "./formCC";
+import { getUserData } from "./dataSC";
 
 export default async function AuthInit() {
   const lang = await getDispLang();
   const dict = await getDictionary(lang);
+  const userData = await getUserData()
   return (
     <>
       <Center style={{ height: "98vh" }}>
@@ -19,7 +21,8 @@ export default async function AuthInit() {
           radius="lg"
           py="20px"
           withBorder
-        ><AuthInitForm dict={dict} /></Paper>
+          pos="relative"
+        ><AuthInitForm dict={dict} originalEmailAddr={userData!.email!} /></Paper>
       </Center>
     </>
   );
