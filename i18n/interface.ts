@@ -2,6 +2,7 @@ export default interface i18nDictionaries {
   auth: {
     login: string;
     signup: string;
+    logout: string;
     emailAddress: string;
     password: string;
     form: {
@@ -30,6 +31,12 @@ export default interface i18nDictionaries {
       }
     };
   };
+  init: {
+    form: {
+      title: string;
+      intro: string;
+    }
+  };
   settings: {
     settings: string;
     language: string;
@@ -39,5 +46,5 @@ export default interface i18nDictionaries {
       apologize: string;
       noDescription: string;
     }
-  }
+  };
 }

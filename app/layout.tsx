@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./mantineGlobals.css";
 import "./globals.css";
+import "@mantine/notifications/styles.css";
 import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import { ElapsedAffix } from "./debuger";
+import { ElapsedAffix } from "./debugger";
 import { getDispLang } from "./langSC";
 // const inter = Inter({ subsets: ["latin"] });
 import { Hind } from "next/font/google";
 import { Noto_Sans_JP } from "next/font/google";
+import { Notifications } from "@mantine/notifications";
 
 const classHind = Hind({
   subsets: ["latin"],
@@ -73,7 +75,9 @@ export default async function RootLayout({
 }) {
   const dispLang = await getDispLang();
   let HTMLLang = dispLang.toLocaleLowerCase();
-  const displayVersionAffix = process.env.NODE_ENV === "development" || process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+  const displayVersionAffix =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
   return (
     <html lang={dispLang}>
       <head>
@@ -84,6 +88,7 @@ export default async function RootLayout({
       </head>
       <body className={`${classNotoSansJP.className}`}>
         <MantineProvider>
+          <Notifications position="top-center" autoClose={4000} />
           {children}
           {displayVersionAffix ? <ElapsedAffix /> : null}
         </MantineProvider>

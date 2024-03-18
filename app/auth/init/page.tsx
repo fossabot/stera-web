@@ -19,7 +19,7 @@ export default async function AuthInit() {
           radius="lg"
           py="20px"
           withBorder
-        ><AuthInitForm /></Paper>
+        ><AuthInitForm dict={dict} /></Paper>
       </Center>
     </>
   );

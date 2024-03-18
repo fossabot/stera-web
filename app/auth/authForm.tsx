@@ -18,6 +18,7 @@ import i18nDictionaries from "@/i18n/interface";
 import { VAR_SERVER_NAME } from "@/libs/common/commonVar";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
+import { showErrorNotification, showInfoNotification, showSuccessNotification } from "../components/notificationCall";
 
 export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
   const [authMode, setAuthMode] = useState("login");
@@ -46,7 +47,7 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
       await login(email, password);
     } catch (error: any) {
       console.error(error.message);
-      alert(error.message);
+      showErrorNotification("エラーが発生しました", error.message, false)
     }
   }
 
@@ -145,11 +146,9 @@ function SignupForm({
       alert(result.message);
     } else {
       if (result.statusCode === "01") {
-        alert(
-          "新規登録されました!\n入力されたメールアドレスに、認証リンクが送信されています\n迷惑メールに振り分けられていないか注意してください"
-        );
+        showSuccessNotification("新規登録メールを送信しました", "新規登録されました!\n入力されたメールアドレスに、認証リンクが送信されています\n迷惑メールに振り分けられていないか注意してください", false)
       } else {
-        alert("存在し得ないエラーが発生しているようです");
+        showErrorNotification("予期せぬエラーが発生しました", "繰り返されるようであれば、開発者に連絡をお願い致します", false)
       }
     }
   }

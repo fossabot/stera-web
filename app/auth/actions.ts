@@ -20,7 +20,7 @@ export async function login(email: string, password: string) {
 
   if (error) {
     setCookie("error", error, {cookies})
-    redirect("/error");
+    return { isError: true, statusCode: "00", message: error.message };
   }
 
   revalidatePath("/", "layout");

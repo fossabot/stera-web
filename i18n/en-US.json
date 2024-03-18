@@ -2,6 +2,7 @@
   "auth": {
     "login": "Login",
     "signup": "Signup",
+    "logout": "Logout",
     "emailAddress": "Email Address",
     "password": "Password",
     "form": {
@@ -28,6 +29,12 @@
         "includeSymbol": "Include Symbol",
         "moreThan10Characters": "More than 10 characters"
       }
+    }
+  },
+  "init": {
+    "form": {
+      "title": "Initial Settings",
+      "intro": "Please enter some information to use finish Stera confirmation"
     }
   },
   "settings": {

@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const supabase = createDBServerClient();
-  let redirectTo = new URL("/", request.nextUrl);
+  let redirectTo = new URL("/?factor=successLogout", request.nextUrl);
   try {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
