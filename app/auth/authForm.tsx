@@ -13,12 +13,16 @@ import {
   LoadingOverlay,
   Box,
 } from "@mantine/core";
-import styles from "./authForm.module.css";
+import defaultStyles from "../styles/default.module.css";
 import i18nDictionaries from "@/i18n/interface";
 import { VAR_SERVER_NAME } from "@/libs/common/commonVar";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { showErrorNotification, showInfoNotification, showSuccessNotification } from "../components/notificationCall";
+import {
+  showErrorNotification,
+  showInfoNotification,
+  showSuccessNotification,
+} from "../components/notificationCall";
 
 export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
   const [authMode, setAuthMode] = useState("login");
@@ -41,13 +45,14 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
     window.history.replaceState(null, "", `/${newAuthMode}`);
   }
 
+  // COMPROMISE ANY!!! using type ANY for error handling
   async function callLogin() {
     setProcessing(true);
     try {
       await login(email, password);
     } catch (error: any) {
       console.error(error.message);
-      showErrorNotification("エラーが発生しました", error.message, false)
+      showErrorNotification("エラーが発生しました", error.message, false);
     }
   }
 
@@ -124,17 +129,17 @@ function SignupForm({
   signupPIN,
   setSignupPIN,
   urlOrigin,
-  setProcessing
+  setProcessing,
 }: {
   dict: i18nDictionaries;
   email: string;
-  setEmail: any;
+  setEmail: (newState: string) => void;
   password: string;
-  setPassword: any;
+  setPassword: (newState: string) => void;
   signupPIN: number | null;
-  setSignupPIN: any;
+  setSignupPIN: (newState: number) => void;
   urlOrigin: string;
-  setProcessing: any;
+  setProcessing: (newState: boolean) => void;
 }) {
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
   const [confirmPIN, setConfirmPIN] = useState<number | null>(null);
@@ -146,9 +151,17 @@ function SignupForm({
       alert(result.message);
     } else {
       if (result.statusCode === "01") {
-        showSuccessNotification("新規登録メールを送信しました", "新規登録されました!\n入力されたメールアドレスに、認証リンクが送信されています\n迷惑メールに振り分けられていないか注意してください", false)
+        showSuccessNotification(
+          "新規登録メールを送信しました",
+          "新規登録されました!\n入力されたメールアドレスに、認証リンクが送信されています\n迷惑メールに振り分けられていないか注意してください",
+          false
+        );
       } else {
-        showErrorNotification("予期せぬエラーが発生しました", "繰り返されるようであれば、開発者に連絡をお願い致します", false)
+        showErrorNotification(
+          "予期せぬエラーが発生しました",
+          "繰り返されるようであれば、開発者に連絡をお願い致します",
+          false
+        );
       }
     }
   }
@@ -178,7 +191,7 @@ function SignupForm({
             onChange={(e) => setEmail(e.target.value)}
             className={isValidEmail(email) ? undefined : "p-invalid"}
             placeholder="your@email.addr"
-            classNames={{ input: styles.input }}
+            classNames={{ input: defaultStyles.input }}
           />
         </Input.Wrapper>
       </div>
@@ -212,6 +225,7 @@ function SignupForm({
             type="number"
             value={signupPIN?.toString()}
             onChange={(e) => setSignupPIN(Number(e))}
+            classNames={{ input: defaultStyles.input }}
           />
         </Input.Wrapper>
       </div>
@@ -227,6 +241,7 @@ function SignupForm({
             type="number"
             value={confirmPIN?.toString()}
             onChange={(e) => setConfirmPIN(Number(e))}
+            classNames={{ input: defaultStyles.input }}
           />
         </Input.Wrapper>
         <Button
@@ -256,10 +271,10 @@ function LoginForm({
 }: {
   dict: i18nDictionaries;
   email: string;
-  setEmail: any;
+  setEmail: (newState: string) => void;
   password: string;
-  setPassword: any;
-  setIsAllValid: any;
+  setPassword: (newState: string) => void;
+  setIsAllValid: (newState: boolean) => void;
 }) {
   const isValidEmail = (val: string) =>
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
@@ -286,7 +301,7 @@ function LoginForm({
             onChange={(e) => setEmail(e.target.value)}
             className={isValidEmail(email) ? undefined : "p-invalid"}
             placeholder="your@email.addr"
-            classNames={{ input: styles.input }}
+            classNames={{ input: defaultStyles.input }}
           />
         </Input.Wrapper>
       </div>

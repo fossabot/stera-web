@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
-import styles from "./authForm.module.css";
+import defaultStyles from "../styles/default.module.css";
 import i18nDictionaries from "@/i18n/interface";
 
 export function SignupPassword({
@@ -26,8 +26,8 @@ export function SignupPassword({
   title: string;
   placeholder: string;
   value: string;
-  setValue: any;
-  setValid: any;
+  setValue: (newState: string) => void;
+  setValid: (newState: boolean) => void;
 }) {
   // パスワード処理
   // https://mantine.dev/core/password-input/#strength-meter-example
@@ -81,7 +81,7 @@ export function SignupPassword({
             placeholder={placeholder}
             value={value}
             onChange={(event) => setValue(event.currentTarget.value)}
-            classNames={{ input: styles.input }}
+            classNames={{ input: defaultStyles.input }}
           />
         </div>
       </Popover.Target>
