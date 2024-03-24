@@ -85,6 +85,7 @@ export default async function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192x192.png"></link>
         <meta name="theme-color" content="#0375e4" />
+        <link rel="icon" href="/favicon.ico"/>
         <ColorSchemeScript />
       </head>
       <body className={`${classNotoSansJP.className}`}>
