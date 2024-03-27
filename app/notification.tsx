@@ -8,7 +8,7 @@ export function CheckFactorParam({ factor }: { factor: string | undefined }) {
     if (factor === "successLogout") {
       showSuccessNotification("Logout success", "We hope we will see you again!", true);
     }
-  }, []);
+  }, [factor]);
 
   return <></>;
 }
