@@ -48,75 +48,77 @@ export function AuthMainForm({ dict }: { dict: i18nDictionaries }) {
   // COMPROMISE ANY!!! using type ANY for error handling
   async function callLogin() {
     setProcessing(true);
-    try {
-      await login(email, password);
-    } catch (error: any) {
-      console.error(error.message);
-      showErrorNotification("エラーが発生しました", error.message, false);
+    const execRes = await login(email, password);
+    if (execRes.isError === true) {
+      console.error(execRes.message);
+      setProcessing(false);
+      showErrorNotification("エラーが発生しました", execRes.message, false);
     }
   }
 
   return (
-    <Box pos="relative">
+    <>
       <LoadingOverlay
         visible={processing}
         zIndex={1000}
-        overlayProps={{ radius: "sm", blur: 2 }}
+        overlayProps={{ radius: "lg", blur: 2, m: 1 }}
       />
-      <Title order={2} c="gray.7">
-        {VAR_SERVER_NAME}{" "}
-        {authMode === "login" ? dict.auth.login : dict.auth.signup}
-      </Title>
-      <Text>
-        {authMode === "login"
-          ? dict.auth.form.intro.login
-          : dict.auth.form.intro.signup}
-      </Text>
-      <div style={{ paddingTop: "15px" }}>
-        {authMode === "login" ? (
-          <LoginForm
-            dict={dict}
-            email={email}
-            setEmail={(newState: string) => setEmail(newState)}
-            password={password}
-            setPassword={(newState: string) => setPassword(newState)}
-            setIsAllValid={(newState: boolean) => setIsAllValid(newState)}
-          />
-        ) : (
-          <SignupForm
-            dict={dict}
-            email={email}
-            setEmail={(newState: string) => setEmail(newState)}
-            password={password}
-            setPassword={(newState: string) => setPassword(newState)}
-            signupPIN={signupPIN}
-            setSignupPIN={(newState: number) => setSignupPIN(newState)}
-            urlOrigin={urlOrigin}
-            setProcessing={(newState: boolean) => setProcessing(newState)}
-          />
-        )}
-      </div>
-      <Divider my={10} />
-      {authMode === "login" ? (
-        <div>
-          <Button
-            fullWidth
-            my={3}
-            disabled={!isAllValid}
-            onClick={() => callLogin()}
-          >
-            {dict.auth.login}
-          </Button>
-          <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
-            {dict.auth.form.switch.toSignup}
-          </Button>
+      <Box pos="relative">
+        <Title order={2} c="gray.7">
+          {VAR_SERVER_NAME}{" "}
+          {authMode === "login" ? dict.auth.login : dict.auth.signup}
+        </Title>
+        <Text>
+          {authMode === "login"
+            ? dict.auth.form.intro.login
+            : dict.auth.form.intro.signup}
+        </Text>
+        <div style={{ paddingTop: "15px" }}>
+          {authMode === "login" ? (
+            <LoginForm
+              dict={dict}
+              email={email}
+              setEmail={(newState: string) => setEmail(newState)}
+              password={password}
+              setPassword={(newState: string) => setPassword(newState)}
+              setIsAllValid={(newState: boolean) => setIsAllValid(newState)}
+            />
+          ) : (
+            <SignupForm
+              dict={dict}
+              email={email}
+              setEmail={(newState: string) => setEmail(newState)}
+              password={password}
+              setPassword={(newState: string) => setPassword(newState)}
+              signupPIN={signupPIN}
+              setSignupPIN={(newState: number) => setSignupPIN(newState)}
+              urlOrigin={urlOrigin}
+              setProcessing={(newState: boolean) => setProcessing(newState)}
+            />
+          )}
         </div>
-      ) : (
-        <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
-          {dict.auth.form.switch.toLogin}
-        </Button>
-      )}
-    </Box>
+        <Divider my={10} />
+        {authMode === "login" ? (
+          <div>
+            <Button
+              fullWidth
+              my={3}
+              disabled={!isAllValid}
+              onClick={() => callLogin()}
+            >
+              {dict.auth.login}
+            </Button>
+            <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
+              {dict.auth.form.switch.toSignup}
+            </Button>
+          </div>
+        ) : (
+          <Button fullWidth my={3} variant="default" onClick={() => toggle()}>
+            {dict.auth.form.switch.toLogin}
+          </Button>
+        )}
+      </Box>
+    </>
   );
 }
 

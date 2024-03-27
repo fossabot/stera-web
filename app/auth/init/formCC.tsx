@@ -2,17 +2,27 @@
 
 import { LinkButton } from "@/app/components/extendedUI";
 import i18nDictionaries from "@/i18n/interface";
-import { TextInput, Textarea, Title } from "@mantine/core";
+import {
+  Button,
+  ComboboxItem,
+  Modal,
+  Select,
+  TextInput,
+  Textarea,
+  Title,
+  Tooltip,
+} from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
 
 interface formInterface {
   email: string;
   username: string;
   commonBio: string;
   birthday: string;
-  gender: string;
+  gender?: string;
 }
 
 export function AuthInitForm({
@@ -22,6 +32,7 @@ export function AuthInitForm({
   dict: i18nDictionaries;
   originalEmailAddr: string;
 }) {
+  const [opened, { open, close }] = useDisclosure(false);
   useEffect(() => {
     window.history.replaceState(null, "", "/auth/init");
   }, []);
@@ -91,9 +102,43 @@ export function AuthInitForm({
           {...form.getInputProps("birthday")}
         />
       </form>
-      <LinkButton href="/auth/logout" variant="default" mt={40}>
+      <Button mt={40}>登録を続行</Button>
+      <Tooltip
+        label="デフォルトでは誕生日と性別は非公開です"
+        opened
+        position="top"
+        offset={2}
+      >
+        <Button onClick={open} variant="default" mt={40}>
+          公開設定を変更
+        </Button>
+      </Tooltip>
+      <LinkButton href="/auth/logout" variant="default" ml="60px" mt={40}>
         {dict.auth.logout}
       </LinkButton>
+      <FormShareDataSetting opened={opened} close={close} />
     </div>
+  );
+}
+
+function FormShareDataSetting({
+  opened,
+  close,
+}: {
+  opened: boolean;
+  close: () => void;
+}) {
+  const [value, setValue] = useState<ComboboxItem | null>(null);
+  return (
+    <Modal opened={opened} onClose={close} title="公開設定">
+      <Select
+        label="誕生日の公開範囲"
+        placeholder="Pick value"
+        data={[{ value: "0", label: "自分のみ" }]}
+        value={value ? value.value : null}
+        onChange={(_value, option) => setValue(option)}
+        allowDeselect={false}
+      />
+    </Modal>
   );
 }

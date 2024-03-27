@@ -1,7 +1,7 @@
 "use client";
 
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, NativeSelect, Text } from "@mantine/core";
+import { Modal, Button, NativeSelect, Text, Select, ComboboxItem } from "@mantine/core";
 import i18nDictionaries from "@/i18n/interface";
 import { useEffect, useState } from "react";
 import { deleteCookie, setCookie } from "cookies-next";
@@ -14,7 +14,8 @@ export function LangSelectCC({
   dict: i18nDictionaries;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
-  const [dispLang, setDispLang] = useState<string>(nowDispLang);
+  // const [value, setValue] = useState<ComboboxItem | null>(null);
+  const [dispLang, setDispLang] = useState<string | null>(nowDispLang);
 
   const languages = [
     { value: "RESET", label: "Reset to default value" },
@@ -44,10 +45,11 @@ export function LangSelectCC({
           blur: 3,
         }}
       >
-        <NativeSelect
+        <Select
           value={dispLang}
-          onChange={(event) => setDispLang(event.currentTarget.value)}
+          onChange={(_value, option) => setDispLang(_value)}
           data={languages}
+          allowDeselect={false}
         />
         <Text size="sm">
           Attention: Page will automatically reload after changing language

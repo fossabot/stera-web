@@ -18,6 +18,7 @@ export default async function AuthPage() {
           shadow="sm"
           radius="lg"
           py="20px"
+          pos="relative"
         >
           <AuthMainForm dict={dict} />
         </Paper>
