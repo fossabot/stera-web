@@ -14,7 +14,7 @@ function getLocale(req: NextRequest) {
   const defaultLocale = "en-US";
   const selectedLang = match(languages, locales, defaultLocale);
   // return selectedLang.replace(/-/g, "");
-  return selectedLang
+  return selectedLang;
 }
 
 export async function middleware(req: NextRequest) {
@@ -22,6 +22,9 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   console.log(`[middleware.ts] Access NextURL: ${url}`);
   console.log(`[middleware.ts] Access Pathname: ${req.nextUrl.pathname}`);
+  if (pathname === "/pwa")
+    return NextResponse.redirect(new URL("/", req.nextUrl));
+
   let res = NextResponse.next({
     request: {
       headers: req.headers,
@@ -31,12 +34,12 @@ export async function middleware(req: NextRequest) {
   function setLangCookie() {
     const recLang = getLocale(req);
     res = NextResponse.redirect(new URL(req.url));
-    let headers = req.headers
+    let headers = req.headers;
     for (const [key, value] of headers.entries()) {
       res.headers.set(key, value);
     }
     res.cookies.set("dispLang", recLang);
-    console.log("[middleware.ts] i18n Refrech Redirect")
+    console.log("[middleware.ts] i18n Refrech Redirect");
     return res;
   }
   // アクセス先のURLが、i18n仕様のものか確認
