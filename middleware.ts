@@ -22,8 +22,8 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   console.log(`[middleware.ts] Access NextURL: ${url}`);
   console.log(`[middleware.ts] Access Pathname: ${req.nextUrl.pathname}`);
-  // if (pathname === "/pwa")
-  //   return NextResponse.redirect(new URL("/", req.nextUrl));
+  if (pathname === "/pwa")
+    return NextResponse.redirect(new URL("/", req.nextUrl));
 
   let res = NextResponse.next({
     request: {
